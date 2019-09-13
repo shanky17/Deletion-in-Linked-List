@@ -1,0 +1,160 @@
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+
+using namespace std;
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+struct node *start = NULL; //declaring a head pointer
+
+struct node* createNode() // allocating memory to a node
+{
+    struct node *n;
+    n = (struct node *)malloc(sizeof(struct node));
+    return n;
+}
+void insertNode()
+{
+    struct node *temp;
+    temp = createNode();
+    cout << "Enter a number : ";
+    cin >> temp->data;
+    temp->link = NULL;
+    if(start==NULL){ // when the list is empty
+        start = temp;
+    }
+    else{
+        struct node *t = start;
+        while(t->link!=NULL){
+            t = t->link;
+        }
+        t->link = temp;
+    }
+    cout << "\nElement inserted.\n\n";
+}
+void deleteNodeFromEnd()
+{
+    if(start==NULL){
+        cout << "\nList is empty.\n";
+    }
+    else if(start->link==NULL){ //when only 1 element is present in the list
+        start = NULL;
+        cout << "\nOnly element present deleted.\n";
+    }
+    else {
+        struct node *t,*p;
+        t = start;
+        while(t->link!=NULL){
+            p = t;
+            t = t->link;
+        }
+        p->link = NULL;
+        free(t);
+        cout << "\nElement deleted.\n";
+    }
+}
+void deleteNodeFromBeg()
+{
+    if(start==NULL){
+        cout << "\nList is empty.\n";
+    }
+    else if(start->link==NULL){
+        start = NULL;
+        cout << "\nOnly element present deleted.\n";
+    }
+    else {
+        struct node *r = start;
+        start = start->link;
+        free(r);
+        cout << "\nElement deleted.\n";
+    }
+}
+void deletePartNode()
+{
+    if(start==NULL){
+        cout << "\nList is empty. Create List First.\n\n";
+    }
+    else {
+        int node;
+        struct node *t,*p;
+        cout << "Enter the node you want to delete : ";
+        cin >> node;
+        if(start->data==node){ // when the node is present at the beginning
+            struct node *r = start;
+            start = start->link;
+            free(r);
+            cout << "\nElement Deleted.\n";
+        }
+        else {
+                t = start;
+                while(t->data!=node){
+                p = t;
+                t = t->link;
+            }
+            p->link = t->link;
+            free(t);
+            cout << "\nElement deleted.\n";
+        }
+    }
+}
+void displayList(struct node *n)
+{
+    struct node *t;
+    if(start==NULL){
+        cout << "\nList is empty.\n\n";
+    }
+    else {
+        t = start;
+        while(t!=NULL){
+            cout << t->data << " ";
+            t = t->link;
+        }
+    }
+    cout << "\n";
+}
+int menu()
+{
+    int ch;
+    cout << "1. Insert an element.\n";
+    cout << "2. Delete an element from the end.\n";
+    cout << "3. Delete an element from the beginning.\n";
+    cout << "4. Delete a particular node.\n";
+    cout << "5. Display List.\n";
+    cout << "6. Exit\n";
+    cout << "Enter your choice : ";
+    cin >> ch;
+    return ch;
+}
+int main()
+{
+    while(1)
+    {
+        switch(menu())
+        {
+        case 1:
+            insertNode();
+            break;
+        case 2:
+            deleteNodeFromEnd();
+            break;
+        case 3:
+            deleteNodeFromBeg();
+            break;
+        case 4:
+            deletePartNode();
+            break;
+        case 5:
+            displayList(start);
+            break;
+        case 6:
+            exit(0);
+            break;
+        default:
+            cout << "\nInvalid choice\n\n";
+        }
+    }
+}
